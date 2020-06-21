@@ -32,13 +32,11 @@ public class ProcedureTest {
 
     @Test
     public void normalRegisterCond() {
-        //指定したURLに遷移する
         webDriver.get("https://learning-portal.kronos.jp/auth/login");
 
-        // 最大5秒間、ページが完全に読み込まれるまで待つ
         webDriver.manage().timeouts().pageLoadTimeout(2, TimeUnit.SECONDS);
 
-        // 指定されたname属性を持つフォームにユーザー情報を入力
+        // ログイン処理
         WebElement nameInput = webDriver.findElement(By.name("email"));
         nameInput.sendKeys("");
 
@@ -48,6 +46,7 @@ public class ProcedureTest {
         WebElement loginButton = webDriver.findElement(By.className("btn-primary"));
         loginButton.click();
 
+        //フォーム入力処理
         List<WebElement> PhysicalCondRadios = webDriver.findElements(By.cssSelector("input[type='radio'][value='1']"));
         for (int i = 0; i < 6; i++) {
             PhysicalCondRadios.get(i).click();
@@ -59,11 +58,9 @@ public class ProcedureTest {
         WebElement registerButton = webDriver.findElement(By.cssSelector("input[type='submit'][value='登録']"));
         registerButton.click();
 
-        //正規表現によるパターンマッチングの準備
         String AppearedLabel = webDriver.findElement(By.className("alert-success")).getText();
         Pattern expectedPattern = Pattern.compile("の出席登録が完了しました。$");
 
-        // 出現したラベルを用いて検証
         assertThat(expectedPattern.matcher(AppearedLabel).find(), is(true));
 
     }
